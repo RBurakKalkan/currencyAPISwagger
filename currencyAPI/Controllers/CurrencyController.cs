@@ -47,11 +47,12 @@ namespace currencyAPI.Controllers
             }
             return currencyList;
         }
-        [HttpPost]
+        [HttpGet("AddDb")]
         public async Task AddDB()
         {
             var XML = await GetFromXML();
-            if (dataDate > DateTime.Now)                                                        // If data is updated then add it to our db
+            DateTime today = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            if (dataDate >= today)                                                              // If data is updated then add it to our db
             {
                 foreach (var item in XML)
                 {
