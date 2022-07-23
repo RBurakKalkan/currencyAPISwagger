@@ -25,26 +25,14 @@ namespace currencyAPI.Controllers
                                     LastUpdated = c.DataDate,
                                     CurrentRate = c.Value
                                 }).ToListAsync();
-            if (State == 1)         //Order by value asc
-            {
-                return result.OrderBy(x => x.CurrentRate);
-            }
-            else if (State == 2)    //Order by value desc
-            {
-                return result.OrderByDescending(x => x.CurrentRate);
-            }
-            else if (State == 3)    //Order by Name asc
-            {
-                return result.OrderBy(x => x.Currency);
-            }
-            else if (State == 4)    //Order by Name desc
-            {
-                return result.OrderByDescending(x => x.Currency);
-            }
-            else
-            {
-                return result;      // no order by at all
-            }
+     
+            return
+                State == 1 ? result.OrderBy(x => x.CurrentRate) :               //Order by value asc
+                State == 2 ? result.OrderByDescending(x => x.CurrentRate) :     //Order by value desc
+                State == 3 ? result.OrderBy(x => x.Currency) :                  // Order by Name asc
+                State == 4 ? result.OrderByDescending(x => x.Currency) :        // Order by Name desc
+                result;                                                         // No order by at all
+
         }
     }
 }

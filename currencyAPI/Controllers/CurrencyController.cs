@@ -31,29 +31,27 @@ namespace currencyAPI.Controllers
             ds.ReadXml(new XmlNodeReader(data));
 
             List<Currency> currencyList = new List<Currency>();
-            string[] selectedCurrencies = { "USD", "EUR", "GBP", "CHF", "KWD", "SAR", "RUB" };      //The currencies that defined in the .NET Case document.
+            string[] selectedCurrencies = { "USD", "EUR", "GBP", "CHF", "KWD", "SAR", "RUB" };  //The currencies that defined in the .NET Case document.
             dataDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["Tarih"].ToString());
 
             foreach (DataRow nodes in ds.Tables[1].Rows)
             {
-                if (selectedCurrencies.Contains(nodes["Kod"]))
+                if (!selectedCurrencies.Contains(nodes["Kod"])) continue;
+                currencyList.Add(new Currency
                 {
-                    currencyList.Add(new Currency
-                    {
-                        Name = nodes["Kod"].ToString(),
-                        DataDate = dataDate,
-                        RecordDate = DateTime.Now,
-                        Value = Convert.ToDouble(nodes["ForexBuying"].ToString().Replace('.', ',')) // I didn't know which price to choose, so i've decided to get "ForexBuying" because it has no NULL value.
-                    });
-                }
+                    Name = nodes["Kod"].ToString(),
+                    DataDate = dataDate,
+                    RecordDate = DateTime.Now,
+                    Value = Convert.ToDouble(nodes["ForexBuying"].ToString().Replace('.', ',')) // I didn't know which price to choose, so i've decided to get "ForexBuying" because it has no NULL value.
+                });
             }
             return currencyList;
         }
         [HttpPost]
-        public async Task<IEnumerable<Currency>> AddDB()
+        public async Task AddDB()
         {
             var XML = await GetFromXML();
-            if (dataDate > DateTime.Now)//If data is updated then add it to our db
+            if (dataDate > DateTime.Now)                                                        // If data is updated then add it to our db
             {
                 foreach (var item in XML)
                 {
@@ -69,8 +67,6 @@ namespace currencyAPI.Controllers
                     }
                 }
             }
-            return new List<Currency>();
-
         }
     }
 }
