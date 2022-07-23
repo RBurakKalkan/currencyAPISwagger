@@ -70,6 +70,7 @@ namespace currencyAPI.Controllers
                 }
             }
             return new List<Currency>();
+
         }
     }
 }

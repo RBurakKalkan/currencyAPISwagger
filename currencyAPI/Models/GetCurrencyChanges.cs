@@ -11,7 +11,7 @@ namespace currencyAPI.Models
         public string Currency { get; set; }
         public DateTime Date { get; set; }
         public double Rate { get; set; }
-        public double Changes { get; set; }
+        public string Changes { get; set; }
 
     }
 }
