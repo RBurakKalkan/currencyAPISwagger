@@ -23,7 +23,7 @@ namespace currencyAPI.ControllersTests
 			foreach (var data in tests)
 			{
 				var actual = await data.ObjectUnderTest.GetFromXML();
-				Assert.AreEqual(data.ExpectedValue, actual, data.Name);
+				Assert.IsNotNull(actual);
 			}
 		}
 #endregion
@@ -34,14 +34,14 @@ namespace currencyAPI.ControllersTests
 //=========================================================================================================================
 		public IEnumerable<ExpectedValueTestData<IEnumerable<currencyAPI.Models.Currency>>> GetDataForExpectedReturnValueTests()
 		{
+			var controller = new currencyAPI.Controllers.CurrencyController();
 			yield return new ExpectedValueTestData<IEnumerable<currencyAPI.Models.Currency>>
 			{
-				Name = @"p1",
-				ObjectUnderTest = null,
-				ExpectedValue = null
+				ObjectUnderTest = controller
 			};
 		}
 #endregion
+
 
 #region Types
 //=========================================================================================================================
@@ -49,9 +49,7 @@ namespace currencyAPI.ControllersTests
 //=========================================================================================================================
 		public struct ExpectedValueTestData<TExpected>
 		{
-			public string Name;
 			public currencyAPI.Controllers.CurrencyController ObjectUnderTest;
-			public TExpected ExpectedValue;
 		}
 #endregion
 	}
@@ -61,15 +59,17 @@ namespace currencyAPI.ControllersTests
 WARNING: Modification of this comment will make it impossible to merge user-defined changes
 
 BEGIN_CODEGEN_DATA
-H4sIAAAAAAAAAO1VTW8aMRA9g8R/mCYXEsES2oRGJUGNCGmRSoiSTdSq6sHYQ3BrbGJ7Q1dV/3vHu8unmqpSD7kUoZX
-n683bmWdtY79S3ofzIVwOYxgMz/sXnyB+37+B7nAw6F3GIfoONVrmUcAoBYGPUzoHf4zOw9QIVG8AD0RrhC9b9dcHLV
-E/PGod1Y+xeVznh01sjpvi1eHogGoalXKlnDip7+EmdR6n7U0z6hqlkHtptIuyvpJvp1zjuEjZjsQTi0yQI4qZ++aW4
-YHk1jgz9tGddAlTNz4R0kSBf2yMctGtlj5YlNwODDWbopsxjsATa1Hz9OyqT9y0t4GfdSHZVco/KuXS53DuKubcF7Jm
-yUhJDjzYNDh/Yc304+BDlsMcja1ENbsW74l+MUD0EyMIrJRDDTI7YC3AmEs1h/BKW4jVvZAVSJRKj8yCD6zgFPxEhun
-5c+bZhbG97zOaF4pr9InVd0wlmPGv7rWz0rGhsfEJVAOGoBqQOsfK8IsGWQfGPc2PWrA5kz5LjoajrwR/qwXaAButOC
-4alM6cQ+ujM4u9B6qvZnULWhmhWgFdyzEvaQFF8c/wpMcuapHPLWxoY4ShpFJuNE6f6xeaXymkBYf7IMdptgJwuUzBa
-JVmM50gDMJ9QSG9saCNhwlaXMQ4xWowQs4SQjLksnNJJ5r0XCoFuX+K9j7k6jGJw7sXz/zmS5n2ezohbmyk8GRjt2FH
-QYon6xnrFyubiYu6havT6cDfqHcl/lSiEmCzDNA4h3/svy77IEUS/NudWXOnlru2FE9RnShVBDdaF6FcyO0/Kzmdofu
-v4md686WKnbcJ908IKF64OyvtrerCpyaopb3uf+IDshTbygdbstqAWXbeZPY7SQWb/r8A+A3nzdoHAAA=
+H4sIAAAAAAAAAO1VTW8aMRA9g8R/cNMLiWAJbUKjkqCihLRIBaJkE7WqejDrIbj12tT2hqyq/vfOmG+URK16yKUIrdb
+z8eZ5/MZb2ysV99jZgPUHMesNzrrnn1n8oXvFTge9Xqcfk/c9aLDcg2DDnAm4S/Gd7DE4z1IjQL1lsC8aQ3jVqL7Zb4
+jqwWHjsHoE9aNqclCH+qguXh8M9zGnViqWipmT+pZd5c5D2txcRqdGKUi8NNpFoa5MtkMuYTQP2fbEYwtcoCGKufvul
+u6eTKxxZuSjG+kyrq58JqSJiH9sjHLRtZaeVhjcJIaap+AmPAGWZNaCTvL2RRe5aW+Jn3UU7ErFn6Vi4Qu9nyru3Fdc
+TbKhkglLaI2N8+fWpJ96H0MMd9i2Aua8tHCL9OcNBD82AsEKM6heWBPWAoy7XCeMtrSFWN6lKCJRKNxxyzyxYifMjyV
+1z59xz8+N7dxPsF8gLsFnVt9wlUHgX95thtSRwbYlY1YmDIE5TOoZVsCfFwgVeOKxf1iCT7n0ITgaDL8h/LUWYAk2Wn
+FcFCi0nQPro7aFzg/ML4e8Ba1AqDKHrsww+3gA8+Rf9MTHS9Bi1jc6oY0WUkqpWKudPNePil8owAOmeZCjPBwBczOZM
+qNVHno6BtajeQEhvbFMG8/GYGHhS9BXYUNIeIZIBk12KvENOz2VSrGZPQV7S7F6hOLw7sUz73wp025HZ8iNDxUcb5wt
+nRFJ8Xg9Yn2wQk9cdDo3tVot9ifqXYk/l6AEsyGCaZiyf6y/LnuSIgr+3c6kvlOZmbYUj962KFPZJ0DLu7vz7A1umKs
+zpWZKbz4p9XOcEGMlhKtiYuUdXsPMee7pvnn4mlpWX9mI6hM0UV3pEGx9rbm1GosH+IWQ6URBCtqzUWCSB68fWzMNPe
+8b312EgOjcJzAh9c8vgccnOJ/Qlv5P77PsfDm9ztss8Y8MTrwwt1ayWOXRJ5ampLlu/wtFbo3TBsyy8iazhyRFa/z/B
+qCsE+fSCAAA
 END_CODEGEN_DATA
 */
